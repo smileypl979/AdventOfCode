@@ -1,0 +1,55 @@
+#!/bin/bash
+position=()
+plot=()
+declare -i x=0 # this is the horizontal plane
+declare -i y=0 # this is the vertical plane
+orders=()
+i=$((0)) && j=$(($i+1))
+readarray -t orders < input.txt
+declare -p orders
+position+=($x $y)
+echo "Position: " ${position[@]}
+plot+=($x $y)
+echo "Plot: " ${plot[@]}
+echo "Number of orders in array: " ${#orders[@]}
+while [ $i -lt ${#orders[@]} ]
+do
+        j=$(($i+1))
+        echo "This is order number: " $j
+        order=${orders[$i]}
+        echo "This is my order: " $order
+        direction=$( echo $order | awk -F" " '{print $1}' )
+        echo "This is my direction: " $direction
+        count=$( echo $order | awk -F" " '{print $2}' )
+        count=$(($count))
+        echo "This is my count: " $count
+        if [ $direction == "forward" ]
+        then
+                echo "Move forward " $count
+                x=$((x+count))
+                position[0]=$x
+        elif [ $direction == "backward" ]
+        then
+                echo "Move backward " $count
+                x=$((x-count))
+                position[0]=$x
+        elif [ $direction == "up" ]
+        then
+                echo "Move up " $count
+                y=$((y-count))
+                position[1]=$y
+        elif [ $direction == "down" ]
+        then
+                echo "Move down " $count
+                y=$((y+count))
+                position[1]=$y
+        else echo "ERROR: " $direction $count "does not compute ... the submarine will crash!!"
+        fi
+        echo "The new position is [x y]: " ${position[0]} ${position[1]}
+        i=$((i+1))
+done
+echo "The final position is [x y]: " ${position[0]} ${position[1]}
+a=${position[0]}
+b=${position[1]}
+tally=$(( a*b ))
+echo "The result is: " $tally

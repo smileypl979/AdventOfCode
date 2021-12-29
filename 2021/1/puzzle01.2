@@ -1,0 +1,25 @@
+#!/bin/bash
+sonar=()
+declare -i i=0
+declare -i a=0 && declare -i b=0 && declare -i c=0
+declare -i first=0 && declare -i second=0 && declare -i third=0
+declare -i deeper=0
+readarray -t sonar < input.txt
+declare -i sonar
+echo "sonar max =" ${#sonar[@]}
+i=${#sonar[@]}
+declare -i z=$((i-2))
+echo "sonar -2 =" $z
+while [ $a -lt $z ]
+do
+        b=$((a+1)) && c=$((a+2))
+        first=${sonar[$a]} && second=${sonar[$b]} && third=${sonar[$c]}
+        sum1=$(( first+second+third )) && echo $sum1
+        a+=1 && b=$((a+1)) && c=$((a+2))
+        fourth=${sonar[$a]} && fifth=${sonar[$b]} && sixth=${sonar[$c]}
+        sum2=$(( fourth+fifth+sixth )) && echo $sum2
+        if [ $sum2 -gt $sum1 ]; then
+                deeper+=1
+                echo "This is deeper =" $deeper
+        fi
+done
